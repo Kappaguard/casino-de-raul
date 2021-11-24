@@ -22,18 +22,21 @@ def rabin_karp(text, pattern):
 
     sum=0
     sumtxt=0
-
+    pat = len(pattern)
     for i in range(len(pattern)):
         sum+=ord(pattern[i])
+
     for k in range(len(text)):
-        for l in range(k,k+len(pattern)):
-            if l < len(text):
-                sumtxt+=ord(text[l])
-            else:
-                pass
+        if k == 0:
+            for l in range(k,k+pat):
+                if l < len(text):
+                    sumtxt += ord(text[l])
+            sumtxt -= ord(text[k+pat-1])
+        if (k+pat-1) < len(text):
+            sumtxt += ord(text[k+pat-1])
         if sum == sumtxt:
             result.append(k)
-        sumtxt=0
+        sumtxt -= ord(text[k])
     return result
 
 

@@ -1,5 +1,5 @@
-a_custom=25 # int(input('1 число: '))
-b_custom=5 # int(input('2 число: '))
+A_CONST=25 # int(input('1 число: '))
+B_CONST=5 # int(input('2 число: '))
 
 def euclid(a_1,b_2):
     """Осуществляет алгоритм Евклида для целых чисел"""
@@ -30,5 +30,5 @@ def euclid(a_1,b_2):
         return(p_ost)
 
 
-print(euclid(a_custom,b_custom))
+print(euclid(A_CONST,B_CONST))
 

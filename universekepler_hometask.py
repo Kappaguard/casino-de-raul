@@ -95,10 +95,6 @@ bodies = [
     MaterialPoint(u2d,     10., vec([  0., 100.]), vec([15.,   0.]))
 ]
 
-bodies_1 = [
-    MaterialPoint(u2d,     10., vec([100.,   0.]), vec([ 0., -15.])),
-    MaterialPoint(u2d,     10., vec([  0., 100.]), vec([15.,   0.]))
-]
 steps = int(TIME_TO_MODEL / MODEL_DELTA_T)
 for stepn in range(steps):
     u2d.model_step()
@@ -107,23 +103,23 @@ for stepn in range(steps):
 plt.gca().set_aspect('equal')
 
 def plt_kepler(same_fig=False):
-    for b in bodies_1:
-        v=b.vtrace
-        p=b.ptrace
-        v_x=[a[0] for a in v]
-        v_y=[a[1] for a in v]
-        r_x=[k[0] for k in p]
-        r_y=[k[1] for k in p]
-        print(r_y)
-        for i in range(steps):
-            r_momentary=[r_x[i],r_y[i]]
-            v_momentary=[v_x[i]*MODEL_DELTA_T,v_y[i]*MODEL_DELTA_T]
-            # print(r_momentary)
-            # print(v_momentary)
-            s=abs(np.cross(r_momentary,v_momentary, axisa=0, axisb=0))
-            plt.plot(s,MODEL_DELTA_T)
-        if not same_fig: # По картинке на тело
-            plt.show()
+    b=bodies[1]
+    v=b.vtrace
+    p=b.ptrace
+    v_x=[a[0] for a in v]
+    v_y=[a[1] for a in v]
+    r_x=[k[0] for k in p]
+    r_y=[k[1] for k in p]
+    print(r_y)
+    for i in range(steps):
+        r_momentary=[r_x[i],r_y[i]]
+        v_momentary=[v_x[i]*MODEL_DELTA_T,v_y[i]*MODEL_DELTA_T]
+        # print(r_momentary)
+        # print(v_momentary)
+        s=abs(np.cross(r_momentary,v_momentary, axisa=0, axisb=0))
+        plt.plot(s,MODEL_DELTA_T)
+    if not same_fig: # По картинке на тело
+        plt.show()
     if same_fig: # Одна картинка на всех
         plt.show()
 

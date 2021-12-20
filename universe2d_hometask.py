@@ -11,7 +11,10 @@ COLLISION_COEFFICIENT = 50
 MODEL_DELTA_T = 0.01
 TIME_TO_MODEL = 20
 
-# ABC это не алфавит, а AbstractBaseClass. Не даст создать экземпляр, пока не переопределишь все методы-заглушки
+# ABC это не алфавит, а AbstractBaseClass. Не даст создать экземпляр, пока
+# не переопределишь все методы-заглушки
+
+
 class Universe(ABC):
     """Невнятная вселенная, основа всех миров"""
 
@@ -40,7 +43,7 @@ class Universe(ABC):
 
 class MaterialPoint:
     """Материальная точка, движущаяся по двумерной плоскости"""
-    
+
     def __init__(self, universe, mass, position, velocity):
         self.universe = universe
         self.mass = mass
@@ -50,13 +53,15 @@ class MaterialPoint:
 
         self.ptrace = [self.position.copy()]
         self.vtrace = [self.velocity.copy()]
-    
+
     def force_induced_by_other(self, other):
         """Сила, с которой другое тело действует на данное"""
         delta_p = other.position - self.position
-        distance = numpy.linalg.norm(delta_p)  # Евклидова норма (по теореме Пифагора)
+        # Евклидова норма (по теореме Пифагора)
+        distance = numpy.linalg.norm(delta_p)
         force_direction = delta_p / distance
-        force = force_direction * self.mass * other.mass * self.universe.gravity_flow_dencity_per_1_1(distance)
+        force = force_direction * self.mass * other.mass * \
+            self.universe.gravity_flow_dencity_per_1_1(distance)
         return force
 
     def advance(self):
@@ -69,8 +74,9 @@ class MaterialPoint:
         """Изменяем скорость, исходя из силы, действующей на тело"""
         self.velocity += force * MODEL_DELTA_T / self.mass
 
+
 class Universe2D(Universe):
-    def __init__(self,G,k,collision_distance):
+    def __init__(self, G, k, collision_distance):
         super().__init__()
         self.G = G
         self.k = k                                  # коэффициент при упругом соударении
@@ -86,14 +92,15 @@ class Universe2D(Universe):
             # Отталкивание при соударении (притяжение убираем).
             return -self.k / dist
 
+
 u2d = Universe2D(MODEL_G, COLLISION_COEFFICIENT, COLLISION_DISTANCE)
 
 bodies = [
-    MaterialPoint(u2d, 2000., vec([  0.,   0.]), vec([ 0.,   0.])),
-    MaterialPoint(u2d,     10., vec([100.,   0.]), vec([ 0., -15.])),
-    MaterialPoint(u2d,     10., vec([  0., 100.]), vec([15.,   0.]))
+    MaterialPoint(u2d, 2000., vec([0., 0.]), vec([0., 0.])),
+    MaterialPoint(u2d, 10., vec([100., 0.]), vec([0., -15.])),
+    MaterialPoint(u2d, 10., vec([0., 100.]), vec([15., 0.]))
 ]
-    
+
 steps = int(TIME_TO_MODEL / MODEL_DELTA_T)
 for stepn in range(steps):
     u2d.model_step()
@@ -110,4 +117,4 @@ for b in bodies:
     # А так — лихо. Кто объяснит? =)
     plt.plot(*tuple(map(list, zip(*b.ptrace))))
 
-plt.show();
+plt.show()
